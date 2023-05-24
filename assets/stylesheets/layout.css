@@ -1,0 +1,10 @@
+h1 {
+    margin: 0;
+}
+
+.separator {
+    width: 100%;
+    border-top: lightgrey solid 1px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
