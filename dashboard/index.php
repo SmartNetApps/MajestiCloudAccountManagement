@@ -1,11 +1,9 @@
 <?php
-session_start();
-if (empty($_SESSION["token"])) {
-    header("Location: /");
-    exit;
-}
-
+include(__DIR__."/../engine/core.include.php");
 require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
+require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
+require_token();
+
 $api = new MajestiCloudAPI($_SESSION["token"]);
 $sessions = $api->session_get();
 usort($sessions, function($a, $b) {
@@ -13,8 +11,6 @@ usort($sessions, function($a, $b) {
 });
 
 $client = $api->client_get($sessions[0]["client_uuid"]);
-
-require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">

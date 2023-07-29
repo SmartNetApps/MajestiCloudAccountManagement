@@ -1,15 +1,10 @@
 <?php
-session_start();
-if (empty($_SESSION["token"])) {
-    header("Location: /");
-    exit;
-}
-
+include(__DIR__."/../engine/core.include.php");
 require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
-$api = new MajestiCloudAPI($_SESSION["token"]);
-
 require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
+require_token();
 
+$api = new MajestiCloudAPI($_SESSION["token"]);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST['user'])) $api_response = $api->user_patch($_POST['user']);
 

@@ -1,12 +1,8 @@
 <?php
+include(__DIR__."/../engine/core.include.php");
 require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
 require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
-
-session_start();
-if (empty($_SESSION["token"])) {
-    header("Location: /");
-    exit;
-}
+require_token();
 
 $api = new MajestiCloudAPI($_SESSION["token"]);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
