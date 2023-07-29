@@ -132,12 +132,12 @@ try {
                 <input type="hidden" name="redirect_uri" value="<?= $redirect_uri ?>">
                 <div class="mb-3">
                     <label for="emailInput" class="form-label">Adresse de courriel</label>
-                    <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" name="email" value="<?php if (isset($email)) echo $email; ?>" required>
+                    <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" name="email" value="<?php if (isset($email)) echo $email; ?>" autocomplete="username" required>
                     <div class="invalid-feedback">Veuillez saisir l'adresse de courriel principale de votre compte.</div>
                 </div>
                 <div class="mb-3">
                     <label for="pwdInput" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control" id="pwdInput" placeholder="Votre mot de passe" name="pwd" required>
+                    <input type="password" class="form-control" id="pwdInput" placeholder="Votre mot de passe" name="pwd" autocomplete="current-password" required>
                     <div class="invalid-feedback">Veuillez saisir le mot de passe de votre compte.</div>
                 </div>
                 <div>
