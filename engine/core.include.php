@@ -5,6 +5,11 @@ include(__DIR__."/Environment.config.php");
 include(__DIR__."/MajestiCloudAPI.class.php");
 include(__DIR__."/webviewengine/WebViewEngine.class.php");
 
+set_exception_handler(function($ex) {
+    header("Location: /error.php?error=".(SHOW_EXCEPTIONS == "on" ? urlencode($ex->getMessage()) : ""));
+    exit;
+});
+
 function require_token() {
     if (empty($_SESSION["token"])) {
         header("Location: /");
