@@ -1,7 +1,5 @@
 <?php
-include(__DIR__."/../engine/core.include.php");
-require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
-require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
+include(__DIR__ . "/../engine/core.include.php");
 require_token();
 
 $api = new MajestiCloudAPI($_SESSION["token"]);
@@ -14,14 +12,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $api_response = $api->user_profile_picture_delete();
                 break;
             case 'add':
-                $local_path = UPLOAD_DIR."/".$_FILES['profile_picture']['name']['file'];
-                if(move_uploaded_file($_FILES['profile_picture']['tmp_name']['file'], $local_path)) {
+                $local_path = UPLOAD_DIR . "/" . $_FILES['profile_picture']['name']['file'];
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name']['file'], $local_path)) {
                     $api_response = $api->user_profile_picture_set($local_path);
                     unlink($local_path);
                 }
                 break;
         }
     }
+
+    if(!empty($api_response)) set_alert($api_response["message"]);
 
     $_SESSION["user"] = $api->user_get();
 }
@@ -32,6 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <?= WebViewEngine::header("Mon profil", "index.php", "bi-arrow-left", "Retour") ?>
+    <?= display_alert() ?>
     <section class="container">
         <h2><i class="bi bi-person-circle"></i> Photo de profil</h2>
         <div class="mb-3">

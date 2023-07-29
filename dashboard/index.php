@@ -1,7 +1,5 @@
 <?php
 include(__DIR__."/../engine/core.include.php");
-require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
-require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
 require_token();
 
 $api = new MajestiCloudAPI($_SESSION["token"]);
@@ -18,6 +16,7 @@ $client = $api->client_get($sessions[0]["client_uuid"]);
 
 <body>
     <?= WebViewEngine::header("Gestion du compte MajestiCloud", "/auth/logout.php", "bi-box-arrow-left", "Déconnexion") ?>
+    <?= display_alert() ?>
     <section class="container">
         <div>
             <h2><i class="bi bi-person-circle"></i> Profil</h2>

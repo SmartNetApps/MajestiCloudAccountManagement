@@ -1,7 +1,5 @@
 <?php
 include(__DIR__."/../engine/core.include.php");
-require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
-require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
 require_token();
 
 $api = new MajestiCloudAPI($_SESSION["token"]);
@@ -16,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    if(!empty($api_response)) set_alert($api_response["message"]);
     $_SESSION["user"] = $api->user_get();
 }
 ?>
@@ -25,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <?= WebViewEngine::header("Sécurité", "index.php", "bi-arrow-left", "Retour") ?>
+    <?= display_alert() ?>
     <section class="container">
         <h2><i class="bi bi-envelope"></i> Adresse de courriel secondaire</h2>
         <p>Vous recevrez les notifications liées à la sécurité de votre compte sur cette adresse. Elle est facultative.</p>

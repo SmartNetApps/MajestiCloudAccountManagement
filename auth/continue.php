@@ -1,7 +1,5 @@
 <?php
-session_start();
-require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
-require_once(__DIR__ . "/../engine/MajestiCloudAPI.class.php");
+include(__DIR__."/../engine/core.include.php");
 
 try {
     $api = new MajestiCloudAPI();

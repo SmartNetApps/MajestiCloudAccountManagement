@@ -1,7 +1,5 @@
 <?php
 
-include(__DIR__ . "/Environment.config.php");
-
 /**
  * PHP interface for MajestiCloud API
  * @author Quentin Pugeat <contact@quentinpugeat.fr>
@@ -46,7 +44,7 @@ class MajestiCloudAPI
             throw new MajestiCloudAPIException(curl_error($this->ch));
         } elseif ($throw_401s && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) == 401) {
             throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
-        } elseif (curl_getinfo($this->ch, CURLINFO_HTTP_CODE) > 299 && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) != 401) {
+        } elseif (curl_getinfo($this->ch, CURLINFO_HTTP_CODE) >= 500) {
             throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
         } else {
             return json_decode($response, true);
