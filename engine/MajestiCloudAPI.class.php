@@ -109,6 +109,37 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch))["data"];
     }
 
+    public function sessions_get()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/session/",
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPGET => true
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch))["data"];
+    }
+
+    public function session_delete($uuid) {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/session/?uuid=".$uuid,
+            CURLOPT_CUSTOMREQUEST => "DELETE",
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
+    public function sessions_current_get()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/session/current.php",
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPGET => true
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch))["data"];
+    }
+
     public function user_get()
     {
         curl_setopt_array($this->ch, [
@@ -175,7 +206,7 @@ class MajestiCloudAPI
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => file_get_contents($local_path),
             CURLOPT_HTTPHEADER => [
-                'Content-Type: '.mime_content_type($local_path),
+                'Content-Type: ' . mime_content_type($local_path),
                 "Authorization: Bearer " . $this->access_token
             ]
         ]);

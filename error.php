@@ -1,4 +1,4 @@
-<?php require_once(__DIR__ . "/assets/webviewengine/WebViewEngine.class.php"); ?>
+<?php require_once(__DIR__ . "/engine/webviewengine/WebViewEngine.class.php"); ?>
 <!DOCTYPE html>
 <html lang="fr">
 <?= WebViewEngine::head("Une erreur est survenue") ?>

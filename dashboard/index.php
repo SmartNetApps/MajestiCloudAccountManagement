@@ -50,7 +50,7 @@ $client = $api->client_get($sessions[0]["client_uuid"]);
                     <p class="m-0"><?=$sessions[0]["last_activity_on"] ?> - <?=$sessions[0]["last_activity_ip"] ?></p>
                 </div>
             </div>
-            <a href="#" class="btn btn-primary shadow-sm"><i class="bi bi-gear-wide-connected"></i> Gérer les sessions</a>
+            <a href="sessions.php" class="btn btn-primary shadow-sm"><i class="bi bi-gear-wide-connected"></i> Gérer les sessions</a>
         </div>
         <div class="separator"></div>
         <div>
