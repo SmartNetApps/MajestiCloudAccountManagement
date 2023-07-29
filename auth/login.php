@@ -8,7 +8,7 @@ try {
 
     $client_uuid = MajestiCloudAPI::CLIENT_ID;
     $redirect_uri = MajestiCloudAPI::CLIENT_REDIRECT_URI;
-    $client = [];
+    $client = $api->client_get($client_uuid);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];

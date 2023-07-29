@@ -1,6 +1,6 @@
 <?php
 
-include(__DIR__."/Environment.config.php");
+include(__DIR__ . "/Environment.config.php");
 
 /**
  * PHP interface for MajestiCloud API
@@ -17,6 +17,7 @@ class MajestiCloudAPI
     private const CLIENT_SECRET = CLIENT_SECRET;
 
     private $ch;
+    private $access_token;
 
     function __construct($access_token = null)
     {
@@ -25,8 +26,9 @@ class MajestiCloudAPI
         curl_setopt($this->ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
 
         if (!empty($access_token)) {
+            $this->access_token = $access_token;
             curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
-                "Authorization: Bearer ".$access_token
+                "Authorization: Bearer " . $access_token
             ]);
         }
     }
@@ -38,12 +40,14 @@ class MajestiCloudAPI
 
     private function parse_response($response, $throw_401s = true)
     {
+        $decoded_message = json_decode($response, true) ? json_decode($response, true)["message"] : urlencode($response);
+
         if (curl_errno($this->ch) != 0) {
             throw new MajestiCloudAPIException(curl_error($this->ch));
         } elseif ($throw_401s && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) == 401) {
-            throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . json_decode($response, true)["message"]);
+            throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
         } elseif (curl_getinfo($this->ch, CURLINFO_HTTP_CODE) > 299 && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) != 401) {
-            throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . json_decode($response, true)["message"]);
+            throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
         } else {
             return json_decode($response, true);
         }
@@ -65,7 +69,8 @@ class MajestiCloudAPI
         }
 
         curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/oauth/authorize",
+            CURLOPT_URL => self::API_ROOT . "/oauth/authorize.php",
+            CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($fields)
         ]);
@@ -86,7 +91,8 @@ class MajestiCloudAPI
         }
 
         curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/oauth/token",
+            CURLOPT_URL => self::API_ROOT . "/oauth/token.php",
+            CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => http_build_query($fields)
         ]);
@@ -97,7 +103,8 @@ class MajestiCloudAPI
     public function client_get($uuid)
     {
         curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/client?uuid=" . $uuid,
+            CURLOPT_URL => self::API_ROOT . "/client.php?uuid=" . $uuid,
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPGET => true
         ]);
 
@@ -108,28 +115,76 @@ class MajestiCloudAPI
     {
         curl_setopt_array($this->ch, [
             CURLOPT_URL => self::API_ROOT . "/user/",
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPGET => true
         ]);
 
         return $this->parse_response(curl_exec($this->ch))["data"];
     }
 
-    public function user_profile_picture_get() {
+    public function user_patch($form_data = [])
+    {
         curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/user/profile_picture",
+            CURLOPT_URL => self::API_ROOT . "/user/",
+            CURLOPT_CUSTOMREQUEST => "PATCH",
+            CURLOPT_POSTFIELDS => http_build_query($form_data)
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
+    public function user_profile_picture_get()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/profile_picture.php",
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPGET => true
         ]);
 
         $image = curl_exec($this->ch);
-        $base64 = base64_encode($image);
-        $mime = curl_getinfo($this->ch, CURLINFO_CONTENT_TYPE);
+        if (curl_getinfo($this->ch, CURLINFO_HTTP_CODE) != 200) {
+            $image = file_get_contents(__DIR__ . "/../assets/images/default-profile.png");
+            $base64 = base64_encode($image);
+            $mime = mime_content_type(__DIR__ . "/../assets/images/default-profile.png");
+        } else {
+            $base64 = base64_encode($image);
+            $mime = curl_getinfo($this->ch, CURLINFO_CONTENT_TYPE);
+        }
 
         return "data:$mime;base64,$base64";
     }
 
-    public function session_get() {
+    public function user_profile_picture_set($local_path)
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/profile_picture.php",
+            CURLOPT_POST => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => file_get_contents($local_path),
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: '.mime_content_type($local_path),
+                "Authorization: Bearer " . $this->access_token
+            ]
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
+    public function user_profile_picture_delete()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/profile_picture.php",
+            CURLOPT_CUSTOMREQUEST => "DELETE"
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
+    public function session_get()
+    {
         curl_setopt_array($this->ch, [
             CURLOPT_URL => self::API_ROOT . "/session/",
+            CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPGET => true
         ]);
 

@@ -19,5 +19,5 @@ try {
         header("Location: /dashboard/index.php");
     }
 } catch (Exception $ex) {
-    header("Location: /error.php?error=" . $ex->getMessage());
+    header("Location: /error.php?error=" . urlencode($ex->getMessage()));
 }

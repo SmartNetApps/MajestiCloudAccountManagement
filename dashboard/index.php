@@ -32,7 +32,7 @@ require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
                     <p class="mb-0"><?= $_SESSION["user"]["primary_email"] ?></p>
                 </div>
             </div>
-            <a href="#" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Modifier le profil</a>
+            <a href="profile.php" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Modifier le profil</a>
         </div>
         <div class="separator"></div>
         <div>
