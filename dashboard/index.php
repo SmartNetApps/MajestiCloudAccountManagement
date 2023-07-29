@@ -40,8 +40,7 @@ require_once(__DIR__ . "/../assets/webviewengine/WebViewEngine.class.php");
             <div>
                 <p>Adresse de courriel de secours : <?= $_SESSION["user"]["recovery_email"] ?></p>
             </div>
-            <a href="#" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Changer l'adresse de courriel secondaire</a>
-            <a href="#" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Changer mon mot de passe</a>
+            <a href="security.php" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Changer les paramètres de sécurité</a>
         </div>
         <div class="separator"></div>
         <div>

@@ -133,6 +133,21 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch));
     }
 
+    public function user_password_set($old, $new)
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/password.php",
+            CURLOPT_POST => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => http_build_query([
+                "current" => $old,
+                "new" => $new
+            ])
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
     public function user_profile_picture_get()
     {
         curl_setopt_array($this->ch, [
