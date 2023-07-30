@@ -13,6 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $sessions = $api->sessions_get();
+usort($sessions, function($a, $b) {
+    return date_create_from_format("Y-m-d H:i:s", $b["last_activity_on"], timezone_open("UTC")) <=> date_create_from_format("Y-m-d H:i:s", $a["last_activity_on"], timezone_open("UTC"));
+});
 ?>
 <!DOCTYPE html>
 <html lang="fr">
