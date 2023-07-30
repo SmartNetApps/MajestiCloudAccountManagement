@@ -9,6 +9,8 @@ usort($sessions, function($a, $b) {
 });
 
 $client = $api->client_get($sessions[0]["client_uuid"]);
+
+$user = $api->user_get();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
