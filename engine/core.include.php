@@ -4,6 +4,7 @@ session_start();
 include(__DIR__."/Environment.config.php");
 include(__DIR__."/MajestiCloudAPI.class.php");
 include(__DIR__."/webviewengine/WebViewEngine.class.php");
+include(__DIR__."/mailer/Mailer.class.php");
 
 set_exception_handler(function($ex) {
     header("Location: /error.php?error=".(SHOW_EXCEPTIONS == "on" ? urlencode($ex->__toString()) : ""));
@@ -32,7 +33,7 @@ function set_alert($message, $level = "info")
 function display_alert() {
     $alert = "";
     if(!empty($_SESSION["alert"])) {
-        $alert = '<div class="mb-3 container alert alert-'.$_SESSION["alert"]["level"].'">'.htmlentities($_SESSION["alert"]["message"]).'</div>';
+        $alert = '<div class="mb-4 container alert alert-'.$_SESSION["alert"]["level"].'">'.htmlentities($_SESSION["alert"]["message"]).'</div>';
     }
     
     clear_alert();

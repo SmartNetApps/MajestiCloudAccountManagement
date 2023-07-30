@@ -120,9 +120,10 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch))["data"];
     }
 
-    public function session_delete($uuid) {
+    public function session_delete($uuid)
+    {
         curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/session/?uuid=".$uuid,
+            CURLOPT_URL => self::API_ROOT . "/session/?uuid=" . $uuid,
             CURLOPT_CUSTOMREQUEST => "DELETE",
         ]);
 
@@ -219,6 +220,28 @@ class MajestiCloudAPI
         curl_setopt_array($this->ch, [
             CURLOPT_URL => self::API_ROOT . "/user/profile_picture.php",
             CURLOPT_CUSTOMREQUEST => "DELETE"
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+    
+    public function user_email_validation_keys()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/email_validation_keys.php?api_key=" . urlencode(self::API_KEY),
+            CURLOPT_HTTPGET => true,
+            CURLOPT_CUSTOMREQUEST => "GET"
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
+    public function user_verify_email($email, $key)
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/verify_email.php?email=" . urlencode($email) . "&key=" . urlencode($key),
+            CURLOPT_HTTPGET => true,
+            CURLOPT_CUSTOMREQUEST => "GET"
         ]);
 
         return $this->parse_response(curl_exec($this->ch));

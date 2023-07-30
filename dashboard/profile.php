@@ -3,8 +3,11 @@ include(__DIR__ . "/../engine/core.include.php");
 require_token();
 
 $api = new MajestiCloudAPI($_SESSION["token"]);
+$mailer = new Mailer();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (!empty($_POST['user'])) $api_response = $api->user_patch($_POST['user']);
+    if (!empty($_POST['user'])) {
+        $api_response = $api->user_patch($_POST['user']);
+    }
 
     if (!empty($_POST['profile_picture'])) {
         switch ($_POST['profile_picture']['action']) {
@@ -24,6 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($api_response)) set_alert($api_response["message"]);
 
     $_SESSION["user"] = $api->user_get();
+    if(!empty($_POST['user']['primary_email'])) {
+        $validation_keys = $api->user_email_validation_keys();
+        if($validation_keys['status'] == true) $mailer->validation_email($_POST['user']['primary_email'], $validation_keys['data']['primary_email_validation_key']);
+    }
 }
 ?>
 <!DOCTYPE html>
