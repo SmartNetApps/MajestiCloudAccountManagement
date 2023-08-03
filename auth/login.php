@@ -1,5 +1,5 @@
 <?php
-include(__DIR__."/../engine/core.include.php");
+include(__DIR__ . "/../engine/core.include.php");
 
 try {
     $api = new MajestiCloudAPI(isset($_SESSION["token"]) ? $_SESSION["token"] : null);
@@ -47,7 +47,7 @@ try {
         }
     }
 } catch (Exception $ex) {
-    header("Location: /error.php?error=" . $ex->getMessage());
+    header("Location: /error.php?error=" . str_replace("\n", "", $ex->getMessage()));
 }
 
 ?>
@@ -78,7 +78,7 @@ try {
     <div class="mb-3">
         <img src="/assets/images/logos/legacy_icon_x128.png" alt="MajestiCloud logo" height="96">
     </div>
-    <div class="border rounded-3 shadow p-4 bg-white" style="width:100%; max-width: 700px;">
+    <div class="border rounded-3 shadow p-4 bg-body-tertiary" style="width:100%; max-width: 700px;">
         <?php if (isset($redirect_to)) : ?>
             <div class="text-center">
                 <div class="spinner-border text-primary" role="status">
@@ -147,9 +147,11 @@ try {
         <?php endif; ?>
     </div>
     <footer class="m-5">
-        &copy; 2014-<?=date("Y")?> Quentin Pugeat
+        &copy; 2014-<?= date("Y") ?> Quentin Pugeat
     </footer>
 </body>
+<script src="https://assets.lesmajesticiels.org/libraries/bootstrap/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://assets.lesmajesticiels.org/libraries/bootstrap/bootstrap-5.x-custom/color-modes-toggler.js"></script>
 <script>
     document.getElementById("submitBtn").addEventListener("click", (ev) => {
         document.getElementsByTagName("form").item(0).classList.add("was-validated")
