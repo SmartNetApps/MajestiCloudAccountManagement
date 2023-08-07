@@ -64,6 +64,12 @@ try {
     body {
         background-image: linear-gradient(to top right, #f5fcff, #fff);
     }
+
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-image: linear-gradient(to top right, #020202, #000);
+        }
+    }
 </style>
 
 <script>
