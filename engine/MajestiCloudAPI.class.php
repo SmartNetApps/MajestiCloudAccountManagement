@@ -42,7 +42,7 @@ class MajestiCloudAPI
 
         if (curl_errno($this->ch) != 0) {
             throw new MajestiCloudAPIException(curl_error($this->ch));
-        } elseif ($throw_401s && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) == 401) {
+        } elseif ($throw_401s && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) >= 400) {
             throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
         } elseif (curl_getinfo($this->ch, CURLINFO_HTTP_CODE) >= 500) {
             throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
