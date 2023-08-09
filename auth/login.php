@@ -149,6 +149,10 @@ try {
                 <div>
                     <button type="submit" id="submitBtn" class="btn btn-primary shadow-sm">Continuer <i class="bi bi-chevron-right"></i></button>
                 </div>
+                <div class="border-top mt-3 pt-3">
+                    <p class="fs-5 mb-1">Vous n'avez pas de compte sur MajestiCloud ?</p>
+                    <a class="btn btn-secondary shadow-sm" href="newaccount.php">Créer un compte <i class="bi bi-chevron-right"></i></a>
+                </div>
             </form>
         <?php endif; ?>
     </div>

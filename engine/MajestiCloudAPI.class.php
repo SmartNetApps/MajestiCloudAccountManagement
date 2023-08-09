@@ -36,13 +36,13 @@ class MajestiCloudAPI
         curl_close($this->ch);
     }
 
-    private function parse_response($response, $throw_401s = true)
+    private function parse_response($response, $throw_4xx = true)
     {
         $decoded_message = json_decode($response, true) ? json_decode($response, true)["message"] : urlencode($response);
 
         if (curl_errno($this->ch) != 0) {
             throw new MajestiCloudAPIException(curl_error($this->ch));
-        } elseif ($throw_401s && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) >= 400) {
+        } elseif ($throw_4xx && curl_getinfo($this->ch, CURLINFO_HTTP_CODE) >= 400) {
             throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
         } elseif (curl_getinfo($this->ch, CURLINFO_HTTP_CODE) >= 500) {
             throw new MajestiCloudAPIException(curl_getinfo($this->ch, CURLINFO_HTTP_CODE) . " : " . $decoded_message);
@@ -150,6 +150,22 @@ class MajestiCloudAPI
         ]);
 
         return $this->parse_response(curl_exec($this->ch))["data"];
+    }
+
+    public function user_post(string $email, string $clear_pwd, string $name) {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/",
+            CURLOPT_POST => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => http_build_query([
+                "email" => $email,
+                "password" => $clear_pwd,
+                "name" => $name,
+                "api_key" => self::API_KEY
+            ])
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch), false);
     }
 
     public function user_patch($form_data = [])
