@@ -179,6 +179,15 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch));
     }
 
+    public function user_delete($reverse = false) {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . ($reverse ? "/user/?reverse=true" : "/user/"),
+            CURLOPT_CUSTOMREQUEST => "DELETE"
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
     public function user_password_set($old, $new)
     {
         curl_setopt_array($this->ch, [

@@ -15,6 +15,8 @@ if ($user["primary_email_is_validated"] == false) {
     set_alert("Veuillez valider votre adresse e-mail principale.", "warning");
 } elseif (!empty($user["recovery_email"]) && $user["recovery_email_is_validated"] == false) {
     set_alert("Veuillez valider votre adresse e-mail secondaire.", "warning");
+} elseif (!empty($user["to_be_deleted_after"])) {
+    set_alert("Votre compte sera supprimé le " . date_create_from_format("Y-m-d H:i:s", $user["to_be_deleted_after"])->format("d/m/Y") . ".", "danger");
 }
 ?>
 <!DOCTYPE html>
@@ -26,7 +28,7 @@ if ($user["primary_email_is_validated"] == false) {
     <?= display_alert() ?>
     <section class="container">
         <div>
-            <h2><i class="bi bi-person-circle"></i> Profil</h2>
+            <h2><i class="bi bi-person-lines-fill"></i> Profil</h2>
             <div class="d-flex align-items-center gap-3 mb-2">
                 <div><img src="<?= $api->user_profile_picture_get() ?>" class="rounded-circle" alt="Photo de profil" height="80" width="80"></div>
                 <div>
@@ -64,6 +66,18 @@ if ($user["primary_email_is_validated"] == false) {
                 </div>
             </div>
             <a href="sessions.php" class="btn btn-primary shadow-sm"><i class="bi bi-gear-wide-connected"></i> Gérer les sessions</a>
+        </div>
+        <div class="separator"></div>
+        <div>
+            <h2><i class="bi bi-person-circle"></i> État du compte</h2>
+
+            <?php if (!empty($user["to_be_deleted_after"])) : ?>
+                <p class="mt-0">Le compte est marqué comme À SUPPRIMER le <?= date_create_from_format("Y-m-d H:i:s", $user["to_be_deleted_after"])->format("d/m/Y") ?>.</p>
+                <a href="accountdelete.php" class="btn btn-danger shadow-sm"><i class="bi bi-person-check-fill"></i> Annuler la suppression du compte</a>
+            <?php else : ?>
+                <p class="mt-0">Compte actif.</p>
+                <a href="accountdelete.php" class="btn btn-danger shadow-sm"><i class="bi bi-person-dash-fill"></i> Demander la suppression du compte</a>
+            <?php endif; ?>
         </div>
         <div class="separator"></div>
         <div>
