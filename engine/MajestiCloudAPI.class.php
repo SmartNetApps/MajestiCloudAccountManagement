@@ -141,6 +141,15 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch))["data"];
     }
 
+    public function session_current_delete() {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/session/current.php",
+            CURLOPT_CUSTOMREQUEST => "DELETE",
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
     public function user_get()
     {
         curl_setopt_array($this->ch, [
