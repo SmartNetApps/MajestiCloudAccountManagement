@@ -16,11 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if(!empty($api_response)) set_alert($api_response["message"]);
     $_SESSION["user"] = $api->user_get();
-
-    if(!empty($_POST['user']['recovery_email'])) {
-        $validation_keys = $api->user_email_validation_keys();
-        if($validation_keys['status'] == true) $mailer->validation_email($_POST['user']['recovery_email'], $validation_keys['data']['recovery_email_validation_key']);
-    }
 }
 ?>
 <!DOCTYPE html>

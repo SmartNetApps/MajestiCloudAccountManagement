@@ -259,21 +259,10 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch));
     }
     
-    public function user_email_validation_keys()
+    public function send_validation_email($for)
     {
         curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/user/email_validation_keys.php?api_key=" . urlencode(self::API_KEY),
-            CURLOPT_HTTPGET => true,
-            CURLOPT_CUSTOMREQUEST => "GET"
-        ]);
-
-        return $this->parse_response(curl_exec($this->ch));
-    }
-
-    public function user_verify_email($email, $key)
-    {
-        curl_setopt_array($this->ch, [
-            CURLOPT_URL => self::API_ROOT . "/user/verify_email.php?email=" . urlencode($email) . "&key=" . urlencode($key),
+            CURLOPT_URL => self::API_ROOT . "/user/send_validation_email.php?for=" . urlencode($for),
             CURLOPT_HTTPGET => true,
             CURLOPT_CUSTOMREQUEST => "GET"
         ]);

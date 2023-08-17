@@ -5,7 +5,6 @@ session_start();
 include(__DIR__ . "/Environment.config.php");
 include(__DIR__ . "/MajestiCloudAPI.class.php");
 include(__DIR__ . "/webviewengine/WebViewEngine.class.php");
-include(__DIR__ . "/mailer/Mailer.class.php");
 
 set_exception_handler(function ($ex) {
     header("Location: /error.php?error=" . (SHOW_EXCEPTIONS == "on" ? urlencode($ex->__toString()) : ""));
