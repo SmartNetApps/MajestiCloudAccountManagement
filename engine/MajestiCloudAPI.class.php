@@ -22,11 +22,13 @@ class MajestiCloudAPI
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
+        curl_setopt($this->ch, CURLOPT_HTTPHEADER, ["X-MAJESTICLOUD-CLIENT: ".$_SERVER["REMOTE_ADDR"]]);
 
         if (!empty($access_token)) {
             $this->access_token = $access_token;
             curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
-                "Authorization: Bearer " . $access_token
+                "Authorization: Bearer " . $access_token,
+                "X-MAJESTICLOUD-CLIENT: ".$_SERVER["REMOTE_ADDR"]
             ]);
         }
     }
