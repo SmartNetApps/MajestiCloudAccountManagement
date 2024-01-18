@@ -22,7 +22,7 @@
 
 <body style="min-height: 100vh;" class="p-3 d-flex flex-column justify-content-center align-items-center">
     <div class="mb-3">
-        <img src="/assets/images/logos/legacy_icon_x128.png" alt="MajestiCloud logo" height="96">
+        <img src="/assets/images/logos/logo.png" alt="MajestiCloud logo" height="96">
     </div>
     <div class="border rounded-3 shadow p-4 bg-body-tertiary" style="width:100%; max-width: 700px;">
         <h2>Une erreur interne est survenue.</h2>
