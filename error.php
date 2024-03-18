@@ -32,7 +32,7 @@
         <a class="btn btn-sm btn-secondary" href="/">Retour vers l'interface</a>
     </div>
     <footer class="m-5">
-        &copy; 2023 Les Majesticiels
+        &copy; 2024 Les Majesticiels
     </footer>
     <script src="https://assets.lesmajesticiels.org/libraries/bootstrap/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://assets.lesmajesticiels.org/libraries/bootstrap/bootstrap-5.x-custom/color-modes-toggler.js"></script>
