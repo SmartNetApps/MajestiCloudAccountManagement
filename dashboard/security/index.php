@@ -1,5 +1,5 @@
 <?php
-include(__DIR__."/../engine/core.include.php");
+include(__DIR__ . "/../../engine/core.include.php");
 require_token();
 
 $api = new MajestiCloudAPI($_SESSION["token"]);
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    if(!empty($api_response)) set_alert($api_response["message"]);
+    if (!empty($api_response)) set_alert($api_response["message"]);
     $_SESSION["user"] = $api->user_get();
 }
 ?>
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?= WebViewEngine::head("Sécurité") ?>
 
 <body>
-    <?= WebViewEngine::header("Sécurité", "index.php", "bi-arrow-left", "Retour") ?>
+    <?= WebViewEngine::header("Sécurité", "/dashboard", "bi-arrow-left", "Retour") ?>
     <?= display_alert() ?>
     <section class="container">
         <h2><i class="bi bi-envelope"></i> Adresse de courriel secondaire</h2>
@@ -49,6 +49,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="btn btn-primary shadow-sm">Enregistrer</button>
         </form>
+    </section>
+    <div class="separator container"></div>
+    <section class="container">
+        <h2><i class="bi bi-lock"></i> Authentification à deux facteurs</h2>
+        <p>L'authentification à deux facteurs sert à renforcer la sécurité de votre compte en mettant en place une étape supplémentaire à l'ouverture de session.</p>
+
+        <h4><i class="bi bi-123"></i> Code à usage unique</h4>
+        <?php if ($_SESSION["user"]["totp_is_enabled"]) : ?>
+            <div class="alert alert-success">
+                <i class="bi bi-lock"></i> L'authentification renforcée par un code à usage unique est actuellement activée sur votre compte.
+            </div>
+        <?php else : ?>
+            <div class="alert alert-danger">
+                <i class="bi bi-unlock"></i> L'authentification renforcée par un code à usage unique est actuellement désactivée sur votre compte.
+            </div>
+        <?php endif; ?>
+        <a href="totp.php" class="btn btn-primary shadow-sm">
+            Gérer
+        </a>
     </section>
     <?= WebViewEngine::footer() ?>
 </body>

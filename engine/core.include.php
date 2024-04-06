@@ -5,6 +5,9 @@ session_start();
 include(__DIR__ . "/Environment.config.php");
 include(__DIR__ . "/MajestiCloudAPI.class.php");
 include(__DIR__ . "/webviewengine/WebViewEngine.class.php");
+include(__DIR__ . "/../vendor/autoload.php");
+
+use chillerlan\QRCode\{QRCode, QROptions};
 
 set_exception_handler(function ($ex) {
     header("Location: /error.php?error=" . (SHOW_EXCEPTIONS == "on" ? urlencode($ex->__toString()) : ""));
@@ -45,4 +48,10 @@ function display_alert()
 function clear_alert()
 {
     unset($_SESSION["alert"]);
+}
+
+function qr_code($data)
+{
+    $qr = new QRCode();
+    return $qr->render($data);
 }

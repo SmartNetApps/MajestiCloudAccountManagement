@@ -44,10 +44,24 @@ if ($user["primary_email_is_validated"] == false) {
         <div class="separator"></div>
         <div>
             <h2><i class="bi bi-shield-lock"></i> Sécurité</h2>
-            <div>
-                <p>Adresse de courriel de secours : <?= $_SESSION["user"]["recovery_email"] ?></p>
+            <div class="mb-3">
+                <p class="m-0">
+                    <?php if (!empty($_SESSION["user"]["recovery_email"])) : ?>
+                        <i class="bi bi-check2"></i> Adresse de courriel de secours renseignée
+                    <?php else : ?>
+                        <i class="bi bi-x-lg"></i> Adresse de courriel de secours non renseignée
+                    <?php endif; ?>
+                </p>
+
+                <p class="m-0">
+                    <?php if ($_SESSION["user"]["totp_is_enabled"]) : ?>
+                        <i class="bi bi-check2"></i> Authentification par OTP activée
+                    <?php else : ?>
+                        <i class="bi bi-x-lg"></i> Authentification par OTP désactivée
+                    <?php endif; ?>
+                </p>
             </div>
-            <a href="security.php" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Changer les paramètres de sécurité</a>
+            <a href="security/index.php" class="btn btn-primary shadow-sm"><i class="bi bi-pencil"></i> Changer les paramètres de sécurité</a>
             <?php if (!empty($user["recovery_email"]) && !$user["recovery_email_is_validated"]) : ?>
                 <a href="triggeremail.php?for=recovery_email_validation" class="btn btn-warning shadow-sm">Renvoyer l'e-mail de validation</a>
             <?php endif; ?>

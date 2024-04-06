@@ -22,13 +22,13 @@ class MajestiCloudAPI
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
-        curl_setopt($this->ch, CURLOPT_HTTPHEADER, ["X-MAJESTICLOUD-CLIENT: ".$_SERVER["REMOTE_ADDR"]]);
+        curl_setopt($this->ch, CURLOPT_HTTPHEADER, ["X-MAJESTICLOUD-CLIENT: " . $_SERVER["REMOTE_ADDR"]]);
 
         if (!empty($access_token)) {
             $this->access_token = $access_token;
             curl_setopt($this->ch, CURLOPT_HTTPHEADER, [
                 "Authorization: Bearer " . $access_token,
-                "X-MAJESTICLOUD-CLIENT: ".$_SERVER["REMOTE_ADDR"]
+                "X-MAJESTICLOUD-CLIENT: " . $_SERVER["REMOTE_ADDR"]
             ]);
         }
     }
@@ -143,7 +143,8 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch))["data"];
     }
 
-    public function session_current_delete() {
+    public function session_current_delete()
+    {
         curl_setopt_array($this->ch, [
             CURLOPT_URL => self::API_ROOT . "/session/current.php",
             CURLOPT_CUSTOMREQUEST => "DELETE",
@@ -163,7 +164,8 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch))["data"];
     }
 
-    public function user_post(string $email, string $clear_pwd, string $name) {
+    public function user_post(string $email, string $clear_pwd, string $name)
+    {
         curl_setopt_array($this->ch, [
             CURLOPT_URL => self::API_ROOT . "/user/",
             CURLOPT_POST => true,
@@ -190,7 +192,8 @@ class MajestiCloudAPI
         return $this->parse_response(curl_exec($this->ch));
     }
 
-    public function user_delete($reverse = false) {
+    public function user_delete($reverse = false)
+    {
         curl_setopt_array($this->ch, [
             CURLOPT_URL => self::API_ROOT . ($reverse ? "/user/?reverse=true" : "/user/"),
             CURLOPT_CUSTOMREQUEST => "DELETE"
@@ -260,7 +263,28 @@ class MajestiCloudAPI
 
         return $this->parse_response(curl_exec($this->ch));
     }
-    
+
+    public function user_totp_post()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/totp.php",
+            CURLOPT_POST => true,
+            CURLOPT_CUSTOMREQUEST => "POST"
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
+    public function user_totp_delete()
+    {
+        curl_setopt_array($this->ch, [
+            CURLOPT_URL => self::API_ROOT . "/user/totp.php",
+            CURLOPT_CUSTOMREQUEST => "DELETE"
+        ]);
+
+        return $this->parse_response(curl_exec($this->ch));
+    }
+
     public function send_validation_email($for)
     {
         curl_setopt_array($this->ch, [

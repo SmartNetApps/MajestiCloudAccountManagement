@@ -3,3 +3,6 @@
 
 # Environment variables
 engine/Environment.config.php
+
+# Composer dependencies
+vendor
