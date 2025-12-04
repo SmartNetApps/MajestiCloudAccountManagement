@@ -1,6 +1,10 @@
 <?php
-session_set_cookie_params(7 * 24 * 60 * 60);
-session_start();
+session_start([
+    "cookie_lifetime" => 604800,
+    "cookie_secure" => true,
+    "cookie_httponly" => true,
+    "cookie_samesite" => "Lax"
+]);
 
 include(__DIR__ . "/Environment.config.php");
 include(__DIR__ . "/MajestiCloudAPI.class.php");
